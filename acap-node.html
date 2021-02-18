@@ -1,0 +1,39 @@
+<script type="text/x-red" data-template-name="acap-node">
+    <div class="form-row">
+        <label for="node-input-account"><i class="icon-tag"></i> Credentials</label>
+        <input type="text" id="node-input-account">
+    </div>
+    <div class="form-row">
+        <label for="node-input-address"><i class="icon-tag"></i> Address</label>
+        <input type="text" id="node-input-address" placeholder="IP or FQDN">
+    </div>
+    <div class="form-row">
+        <label for="node-input-action"><i class="icon-tag"></i> Action</label>
+        <select id="node-input-action">
+            <option value="Settings">Settings</option>
+            <option value="Request 2">Request 2</option>
+		</select>
+	</div>
+</script>
+
+<script type="text/javascript">
+RED.nodes.registerType('acap-node',{
+	category: 'Axis',
+	color: '#33CCFF',
+	defaults: {
+		account: {type:"axis-config"},
+		address: {value:""},
+		action: { value:"Request 1"},
+		data: {value:""}
+	},
+	icon: "font-awesome/fa-puzzle-piece",
+	inputs:1,
+	outputs:1,
+	label: function() {
+		return this.action || "ACAP Node";
+	}
+});
+</script>
+
+<script type="text/x-red" data-help-name="acap-node">
+</script>
