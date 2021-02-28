@@ -4,7 +4,7 @@
   "description": "Template node for simplifying specific Axis device integration",
   "author": {
     "name": "Fred Juhlin",
-    "email": "fred@juhlin.me"
+    "email": "fred.juhlin.me"
   },
   "license": "MIT",
   "bugs": {
@@ -12,14 +12,11 @@
   },
   "bundleDependencies": false,
   "dependencies": {
-    "@mreal/digest-auth": "^1.1.3",
-    "form-data": "^3.0.0",
-    "got": "^11.8.0",
-    "xml2js": "^0.4.22"
+    "vapix-wrapper": "^1.0.0"
   },
   "deprecated": false,
   "homepage": "https://github.com/pandosme/node-red-axis-template",
-  "keywords": ["node-red","Axis","Template"],
+  "keywords": ["node-red","Axis","Node template"],
   "node-red": {
     "nodes": {
       "axis-template": "axis-template.js"

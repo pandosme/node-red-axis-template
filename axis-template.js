@@ -1,4 +1,4 @@
-const AxisDigest = require('./AxisDigest.js');
+const VapixWrapper = require('vapix-wrapper');
 
 module.exports = function(RED) {
 	
@@ -11,53 +11,25 @@ module.exports = function(RED) {
 		var node = this;
 		
 		node.on('input', function(msg) {
-			var address = null;
-			var user = null;
-			var password = null;
-			var protocol = "http";
-			var preset = RED.nodes.getNode(node.preset);
-
 			node.status({});
+			var device = {address: null,user: null,password: null,protocol: "http"}
 
+			var preset = RED.nodes.getNode(node.preset);
 			if( preset ) {
-				address = preset.address;
-				user = preset.credentials.user;
-				password = preset.credentials.password;
-				protocol = preset.protocol || "http";
+				device.address = preset.address;
+				device.user = preset.credentials.user;
+				device.password = preset.credentials.password;
+				device.protocol = preset.protocol || "http";
 			}
-			
-			if( msg.address )
-				address = msg.address;
-			if(!address || address.length < 3) {
-				msg.error = "Address undefined";
-				node.warn(msg.error);
-				return;
-			}
-			
-			if( msg.user )	user = msg.user;
-			if(!user || user.length < 2) {
-				msg.error = "User name undefined";
-				node.warn(msg.error);
-				return;
-			}
-			
-			if( msg.password )
-				password = msg.password;
-			if(!password || password.length < 3) {
-				msg.error = "Password undefined";
-				node.warn(msg.error);
-				return;
-			}
-
-			var device = {
-				url: protocol + '://' + address,
-				user: user,
-				password: password
-			}
+			if( msg.address ) device.address = msg.address;
+			if( msg.user ) device.user = msg.user;
+			if( msg.password ) device.password = msg.password;
 
 			var action = msg.action || node.action;
 			var data = node.data || msg.payload;
-			var data = node.options || msg.options;
+			var options = msg.options || node.option;
+			
+//			console.log("axis-template", {address: device.address,action: action,data: data,options: options});
 
 			switch( action ) {
 				case "Get":
