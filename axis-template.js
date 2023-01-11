@@ -1,4 +1,5 @@
-const VapixWrapper = require('vapix-wrapper');
+//Copyright (c) 2023 Fred Juhlin
+const HTTP_digest = require('./axis-digest');
 
 module.exports = function(RED) {
 	
@@ -15,48 +16,47 @@ module.exports = function(RED) {
 			var device = {address: null,user: null,password: null,protocol: "http"}
 
 			var preset = RED.nodes.getNode(node.preset);
-			if( preset ) {
-				device.address = preset.address;
-				device.user = preset.credentials.user;
-				device.password = preset.credentials.password;
-				device.protocol = preset.protocol || "http";
+			var device = {
+				address: msg.address || preset.address,
+				user: msg.user || preset.credentials.user,
+				password: msg.password || preset.credentials.password,
+				protocol: preset.protocol || "http"
 			}
-			if( msg.address ) device.address = msg.address;
-			if( msg.user ) device.user = msg.user;
-			if( msg.password ) device.password = msg.password;
-
-			var action = msg.action || node.action;
-			var data = node.data || msg.payload;
-			var options = msg.options || node.option;
 			
-//			console.log("axis-template", {address: device.address,action: action,data: data,options: options});
+			var action = msg.action || node.action;
+			var filename = msg.filename || node.filename;
+			var options = node.options || msg.payload;
 
 			switch( action ) {
 				case "Get":
-					msg.payload = {
-						action: action,
-						data: data,
-						options: options
-					}
-					node.warn("Not yet implemented");
-					node.send(msg);
+/*				
+					HTTP_digest.get( device, msg.payload, function( error, response ) {
+						msg.payload = response;
+						if( error ) {
+							node.error(response.statusMessage, msg);
+							return;							
+						}
+						node.send(msg);
+					});
 				break;
 				case "Set":
-					msg.payload = {
-						action: action,
-						data: data,
-						options: options
-					}
-					node.warn("Not yet implemented");
-					node.send(msg);
+					HTTP_digest.get( device, msg.payload, function( error, response ) {
+						msg.payload = response;
+						if( error ) {
+							node.error(response.statusMessage, msg);
+							return;							
+						}
+						node.send(msg);
+					});
+*/					
 				break;
 			}
         });
     }
 	
-    RED.nodes.registerType("axis-template",AXIS_Template,{
+    RED.nodes.registerType("Axis Template",AXIS_Template,{
 		defaults: {
-			preset: {type:"axis-preset"},
+			preset: {type:"Axis Device"},
 			action: { type:"text" },
 			data: { type:"data" },
 			options: { type:"text" }
