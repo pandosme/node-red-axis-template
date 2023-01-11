@@ -7,14 +7,11 @@ module.exports = function(RED) {
 		RED.nodes.createNode(this,config);
 		this.preset = config.preset;		
 		this.action = config.action;
-		this.data = config.data;
 		this.options = config.options;
 		var node = this;
 		
 		node.on('input', function(msg) {
 			node.status({});
-			var device = {address: null,user: null,password: null,protocol: "http"}
-
 			var preset = RED.nodes.getNode(node.preset);
 			var device = {
 				address: msg.address || preset.address,
@@ -24,31 +21,26 @@ module.exports = function(RED) {
 			}
 			
 			var action = msg.action || node.action;
-			var filename = msg.filename || node.filename;
 			var options = node.options || msg.payload;
+
+			console.log(action);
 
 			switch( action ) {
 				case "Get":
-/*				
-					HTTP_digest.get( device, msg.payload, function( error, response ) {
+					var cgi = "/axis-cgi/param.cgi?action=list&group=properties";
+					HTTP_digest.get( device, cgi, "text", function( error, response ) {
 						msg.payload = response;
 						if( error ) {
 							node.error(response.statusMessage, msg);
 							return;							
 						}
+						msg.payload = msg.payload.split("\n");  //Return array;
 						node.send(msg);
 					});
 				break;
 				case "Set":
-					HTTP_digest.get( device, msg.payload, function( error, response ) {
-						msg.payload = response;
-						if( error ) {
-							node.error(response.statusMessage, msg);
-							return;							
-						}
-						node.send(msg);
-					});
-*/					
+					msg.payload = "Set not yet implemented";
+					node.error("Set not yet implemented", msg);
 				break;
 			}
         });
@@ -58,7 +50,6 @@ module.exports = function(RED) {
 		defaults: {
 			preset: {type:"Axis Device"},
 			action: { type:"text" },
-			data: { type:"data" },
 			options: { type:"text" }
 		}		
 	});

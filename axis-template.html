@@ -10,13 +10,9 @@
             <option value="Set">Set</option>
 		</select>
 	</div>
-    <div class="form-row input_data">
-        <label for="node-input-data"><i class="icon-tag"></i> Data</label>
-        <input type="text" id="node-input-data" placeholder="Optional or inject msg.payload">
-    </div>
     <div class="form-row input_options">
         <label for="node-input-options"><i class="icon-tag"></i> Options</label>
-        <input type="text" id="node-input-options" placeholder="Optional or inject msg.options">
+        <input type="text" id="node-input-options" placeholder="Some options....">
     </div>
 </script>
 
@@ -26,8 +22,7 @@ RED.nodes.registerType('Axis Template',{
 	color: '#FFCC33',
 	defaults: {
 		preset: {type:"Device Access"},
-		action: { value:""},
-		data: { value:""},
+		action: { value:"Get"},
 		options: { value:""}
 	},
 	icon: "font-awesome/fa-rocket",
@@ -39,16 +34,13 @@ RED.nodes.registerType('Axis Template',{
 	oneditprepare: function() {
 		$("#node-input-action").change(function() {
 			var action = $("#node-input-action").val();
-			$(".input_data").hide();
-			$(".input_options").show();
+			$(".input_options").hide();
 			switch (action) {
 				case "Get":
 				break;
 				case "Set":
+					$(".input_options").show();
 				break;
-				default:
-					$(".input_data").hide();
-					$(".input_options").hide();
 			}
 		});
 	}
@@ -71,8 +63,8 @@ RED.nodes.registerType('Axis Template',{
 				payload is the URL that you want to access
 			</dd>
 		</dl>	
-	</p><br/>
-
+	</p>
+	<br/>
 	<p>
 		<b>Set</b><br/>
 		Set something...
@@ -82,6 +74,6 @@ RED.nodes.registerType('Axis Template',{
 				payload is the URL that you want to access
 			</dd>
 		</dl>	
-	</p><br/>
-
+	</p>
+	<br/>
 </script>

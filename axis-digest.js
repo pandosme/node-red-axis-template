@@ -16,6 +16,7 @@ exports.get = function( device, path, resonseType, callback ) {
 	}
 	var protocol = device.protocol || "http";
 	var url = protocol + "://" + device.address + path;
+	console.log(url);
 	var client = got.extend({
 		hooks:{
 			afterResponse: [
