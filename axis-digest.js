@@ -1,4 +1,5 @@
 //Copyright (c) 2023 Fred Juhlin
+// Provide digest authentication 
 
 const digestAuth = require("@mreal/digest-auth");
 const got = require("got");
